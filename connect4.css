@@ -1,0 +1,26 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: orange;
+}
+
+#theBoard {
+    width: 72%;
+    height: 72%;
+    margin: auto;
+}
+
+.boardSlot {
+    width: 14.28%;
+    height: 16.66%;
+    display: block;
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    border: 1px solid black;
+}
