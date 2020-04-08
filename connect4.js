@@ -33,27 +33,12 @@ function playGame() {
     }
 }
 
-
 function makeMove(aBoardSquare, playerColor, currentMoveCount) {
     let currentColumn = aBoardSquare.id.charAt(1);
     trickleDown(currentColumn, playerColor.color);
     incrementMoveCount(currentMoveCount);
     updatePlayerColor(playerColor);
     console.log(currentMoveCount.count, playerColor.color);
-}
-
-function incrementMoveCount(currentMoveCount) {
-    currentMoveCount.count++;
-    console.log(currentMoveCount.count);
-}
-
-function updatePlayerColor(currentColor) {
-    if (currentColor.color == "black") {
-        currentColor.color = "red";
-    }
-    else {
-        currentColor.color = "black";
-    }
 }
 
 function trickleDown(column, color) {
@@ -81,5 +66,19 @@ function trickleDown(column, color) {
         else {
             theCurrentSquare.firstChild.id = "true";
         }
+    }
+}
+
+function incrementMoveCount(currentMoveCount) {
+    currentMoveCount.count++;
+    console.log(currentMoveCount.count);
+}
+
+function updatePlayerColor(currentColor) {
+    if (currentColor.color == "black") {
+        currentColor.color = "red";
+    }
+    else {
+        currentColor.color = "black";
     }
 }
