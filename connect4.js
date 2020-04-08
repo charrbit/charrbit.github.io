@@ -23,7 +23,7 @@ function makeBoard() {
 
 function playGame() {
     let moveCount = {count: 0}; // both declared as objects to pass by reference
-    let currentColor = {color: "black"};
+    let currentColor = {color: "yellow"};
 
     let theBoardSquares = document.getElementsByClassName("boardSquare");
     for (let i = 0; i < theBoardSquares.length; i++) {
@@ -38,26 +38,24 @@ function makeMove(aBoardSquare, playerColor, currentMoveCount) {
     trickleDown(currentColumn, playerColor.color);
     incrementMoveCount(currentMoveCount);
     updatePlayerColor(playerColor);
-    console.log(currentMoveCount.count, playerColor.color);
 }
 
 function trickleDown(column, color) {
     let currentRow = 0;
     let nextSlotFilled = document.getElementById("" + currentRow + column).firstChild.id;
     while (nextSlotFilled == "false" && currentRow < 6) {
-        console.log("currently at:", currentRow, column);
         let theCurrentSquare = document.getElementById("" + currentRow + column);
-        theCurrentSquare.firstChild.style.backgroundColor = color;
+        setTimeout(() => { // "trickle down"
+            theCurrentSquare.firstChild.style.backgroundColor = color;
+        }, 100 * currentRow);
         currentRow++;
         if (currentRow < 6) {
             let theNextSquare = document.getElementById("" + currentRow + column);
             nextSlotFilled = theNextSquare.firstChild.id;
             if (nextSlotFilled == "false") { // if not at final position,
-                console.log("next slot is: ", currentRow, column, "is next slot filled?: ", nextSlotFilled);
-                console.log("Doing Timeout");
                 setTimeout(() =>  { // "trickle down"
-                    theCurrentSquare.firstChild.style.backgroundColor = "green";
-                }, 1000);
+                    theCurrentSquare.firstChild.style.backgroundColor = "white";
+                }, 100 * currentRow);
             }
             else { // at its final position
                 theCurrentSquare.firstChild.id = "true";
@@ -71,14 +69,13 @@ function trickleDown(column, color) {
 
 function incrementMoveCount(currentMoveCount) {
     currentMoveCount.count++;
-    console.log(currentMoveCount.count);
 }
 
 function updatePlayerColor(currentColor) {
-    if (currentColor.color == "black") {
+    if (currentColor.color == "yellow") {
         currentColor.color = "red";
     }
     else {
-        currentColor.color = "black";
+        currentColor.color = "yellow";
     }
 }
