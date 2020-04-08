@@ -16,7 +16,7 @@ body {
     padding-top: 86px;
 }
 
-.boardSlot {
+.boardSquare {
     width: 138px;
     height: 138px;
     display: block;
@@ -25,4 +25,10 @@ body {
     padding: 0px;
     background-color: orange;
     border: 1px solid white;
+}
+
+.boardSlot {
+    background-color: green;
+    width: 100%;
+    height: 100%;
 }
