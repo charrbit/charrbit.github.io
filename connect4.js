@@ -36,6 +36,7 @@ function playGame() {
 function makeMove(aBoardSquare, playerColor, currentMoveCount) {
     let currentColumn = aBoardSquare.id.charAt(1);
     trickleDown(currentColumn, playerColor.color);
+    setTimeout(checkWin, 600);
     incrementMoveCount(currentMoveCount);
     updatePlayerColor(playerColor);
 }
@@ -78,4 +79,75 @@ function updatePlayerColor(currentColor) {
     else {
         currentColor.color = "yellow";
     }
+}
+
+function checkWin() {
+    let theBinaryBoard = generateBinaryBoard();
+    let theBinaryBoardT = transpose(theBinaryBoard);
+    
+    console.log(theBinaryBoard, theBinaryBoardT);
+
+    for (let i = 0; i < theBinaryBoardT.length; i++) {
+        if (i < theBinaryBoardT.length - 1) {
+            if (compareFour(theBinaryBoard, i, 0)) {
+                alert("Win Detected Horizontally!");
+            }
+        }
+        if(compareFour(theBinaryBoardT, i, 0)) {
+            alert("Win Detected Vertically!");
+        }
+    }
+}
+
+function generateBinaryBoard() {
+    let binaryBoard = new Array(6);
+    for (let row = 0; row < binaryBoard.length; row++) {
+        binaryBoard[row] = new Array(7)
+        for (let column = 0; column < binaryBoard[row].length; column++) {
+            let currentSlot = document.getElementById("" + row + column).firstChild;
+            if (currentSlot.style.backgroundColor == "yellow") {
+                binaryBoard[row][column] = 0;
+            }
+            else if (currentSlot.style.backgroundColor == "red") {
+                binaryBoard[row][column] = 1;
+            }
+            else {
+                binaryBoard[row][column] = null;
+            }
+            
+        }
+    }
+
+    return binaryBoard;
+}
+
+function compareFour(theBinaryBoard, rowToCheck, startColumn) {
+    let numColumns = theBinaryBoard[rowToCheck].length;
+    if (startColumn == numColumns - 3) {
+        return false;
+    }
+
+    if (
+        theBinaryBoard[rowToCheck][startColumn] == theBinaryBoard[rowToCheck][startColumn + 1] ==
+        theBinaryBoard[rowToCheck][startColumn + 2] == theBinaryBoard[rowToCheck][startColumn + 3] &&
+        theBinaryBoard[rowToCheck][startColumn] != null)
+    {
+        return true;
+    }
+
+    return compareFour(theBinaryBoard, rowToCheck, startColumn + 1); // shift over one column and compare the next 4
+}
+
+function transpose(theBinaryBoard) {
+    let newNumRows = theBinaryBoard[0].length;
+    let newNumColums = theBinaryBoard.length;
+    let transposedBoard = new Array(newNumRows);
+    for (let row = 0; row < newNumRows; row++) {
+        transposedBoard[row] = new Array(newNumColums);
+        for (let column = 0; column < newNumColums; column++) {
+            transposedBoard[row][column] = theBinaryBoard[column][row];
+        }
+    }
+
+    return transposedBoard;
 }
