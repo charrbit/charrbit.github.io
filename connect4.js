@@ -22,23 +22,32 @@ function makeBoard() {
 }
 
 function playGame() {
-    let moveCount = {count: 0}; // both declared as objects to pass by reference
+    let moveCount = {count: 0}; // declared as objects to modify outside playGame()
     let currentColor = {color: "yellow"};
+    let winDetected = {gameOver: false};
 
     let theBoardSquares = document.getElementsByClassName("boardSquare");
     for (let i = 0; i < theBoardSquares.length; i++) {
         theBoardSquares[i].addEventListener("click", () => {
-            console.log("click");
-            makeMove(theBoardSquares[i], currentColor, moveCount)});
+            makeMove(theBoardSquares[i], currentColor, moveCount, winDetected)});
     }
 }
 
-function makeMove(aBoardSquare, playerColor, currentMoveCount) {
+function makeMove(aBoardSquare, playerColor, currentMoveCount, isGameOver) {
     let currentColumn = aBoardSquare.id.charAt(1);
     trickleDown(currentColumn, playerColor.color);
-    setTimeout(checkWin, 600);
+    setTimeout(() => {
+        checkWin(isGameOver);
+    }, 500);
     incrementMoveCount(currentMoveCount);
     updatePlayerColor(playerColor);
+    if (isGameOver.gameOver == true) {
+        theBoardSquares = document.getElementsByClassName("boardSquare");
+        for (let i = 0; i < theBoardSquares.length; i++) {
+            let boardSquareCopy = theBoardSquares[i].cloneNode(true);
+            theBoardSquares[i].parentNode.replaceChild(boardSquareCopy, theBoardSquares[i]);
+        }
+    }
 }
 
 function trickleDown(column, color) {
@@ -81,24 +90,27 @@ function updatePlayerColor(currentColor) {
     }
 }
 
-function checkWin() {
+function updateGameOver(winDetected) {
+    winDetected.gameOver = true;
+}
+
+function checkWin(isGameOver) {
     let theBinaryBoard = generateBinaryBoard();
     let theBinaryBoardT = transpose(theBinaryBoard);
-    
-    console.log(theBinaryBoard, theBinaryBoardT);
+    let theDiagsAsRows = generateDiagsAsRows(theBinaryBoard);
 
-    for (let i = 0; i < theBinaryBoardT.length; i++) {
-        console.log("Checking row: ", i);
-        if (i < theBinaryBoardT.length - 1) {
-            if (compareFour(theBinaryBoard, i, 0)) {
-                alert("Win Detected Horizontally!");
-            }
+    for (let i = 0; i < theDiagsAsRows.length; i++) {
+        if (i < theBinaryBoard.length && compareFour(theBinaryBoard, i, 0)) {
+            updateGameOver(isGameOver);
         }
-        if(compareFour(theBinaryBoardT, i, 0)) {
-            alert("Win Detected Vertically!");
+        if (i < theBinaryBoardT.length && compareFour(theBinaryBoardT, i, 0)) {
+            updateGameOver(isGameOver);
+        }
+        if (compareFour(theDiagsAsRows, i, 0)) {
+            updateGameOver(isGameOver);
         }
     }
-}
+ }
 
 function generateBinaryBoard() {
     let binaryBoard = new Array(6);
@@ -129,10 +141,10 @@ function compareFour(theBinaryBoard, rowToCheck, startColumn) {
     }
 
     if (
+        theBinaryBoard[rowToCheck][startColumn] != null &&
         (theBinaryBoard[rowToCheck][startColumn] === theBinaryBoard[rowToCheck][startColumn + 1]) &&
         (theBinaryBoard[rowToCheck][startColumn + 1] === theBinaryBoard[rowToCheck][startColumn + 2]) &&
-        (theBinaryBoard[rowToCheck][startColumn + 2] === theBinaryBoard[rowToCheck][startColumn + 3]) &&
-        theBinaryBoard[rowToCheck][startColumn] != null )
+        (theBinaryBoard[rowToCheck][startColumn + 2] === theBinaryBoard[rowToCheck][startColumn + 3]) )
     {
         return true;
     }
@@ -152,4 +164,46 @@ function transpose(theBinaryBoard) {
     }
 
     return transposedBoard;
+}
+
+function getSingleDiagAsRow(theBinaryBoard, startRow, startColumn, isMainDiag) {
+    let currentRow = startRow;
+    let currentColumn = startColumn;
+
+    let newRow = [];
+    while (currentRow < theBinaryBoard.length && currentColumn < theBinaryBoard[0].length
+            && currentColumn >= 0) { // for antidiagonal
+        newRow.push(theBinaryBoard[currentRow][currentColumn]);
+        currentRow++;
+        if (isMainDiag) {
+            currentColumn++;
+        }
+        else { // antidiagonal
+            currentColumn--;
+        }
+    }
+
+    return newRow;
+}
+
+function generateDiagsAsRows(theBinaryBoard) {
+    let startRow = 0;
+    let mainStartColumn = 4;
+    let antiStartColumn = 2;
+
+    let diagsAsRows = [];
+
+    for (let i = 0; i < theBinaryBoard.length; i++) {
+        if (i < 4) {
+            diagsAsRows.push(getSingleDiagAsRow(theBinaryBoard, startRow, --mainStartColumn, true));
+            diagsAsRows.push(getSingleDiagAsRow(theBinaryBoard, startRow, ++antiStartColumn, false));
+        }
+        else {
+            startRow++;
+            diagsAsRows.push(getSingleDiagAsRow(theBinaryBoard, startRow, mainStartColumn, true));
+            diagsAsRows.push(getSingleDiagAsRow(theBinaryBoard, startRow, antiStartColumn, false));
+        }
+    }
+
+    return diagsAsRows;
 }
