@@ -88,6 +88,7 @@ function checkWin() {
     console.log(theBinaryBoard, theBinaryBoardT);
 
     for (let i = 0; i < theBinaryBoardT.length; i++) {
+        console.log("Checking row: ", i);
         if (i < theBinaryBoardT.length - 1) {
             if (compareFour(theBinaryBoard, i, 0)) {
                 alert("Win Detected Horizontally!");
@@ -128,9 +129,10 @@ function compareFour(theBinaryBoard, rowToCheck, startColumn) {
     }
 
     if (
-        theBinaryBoard[rowToCheck][startColumn] == theBinaryBoard[rowToCheck][startColumn + 1] ==
-        theBinaryBoard[rowToCheck][startColumn + 2] == theBinaryBoard[rowToCheck][startColumn + 3] &&
-        theBinaryBoard[rowToCheck][startColumn] != null)
+        (theBinaryBoard[rowToCheck][startColumn] === theBinaryBoard[rowToCheck][startColumn + 1]) &&
+        (theBinaryBoard[rowToCheck][startColumn + 1] === theBinaryBoard[rowToCheck][startColumn + 2]) &&
+        (theBinaryBoard[rowToCheck][startColumn + 2] === theBinaryBoard[rowToCheck][startColumn + 3]) &&
+        theBinaryBoard[rowToCheck][startColumn] != null )
     {
         return true;
     }
