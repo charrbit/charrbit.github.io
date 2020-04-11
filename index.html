@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 
 <html>
+
     <head>
+
         <title>Connect 4</title>
         <link rel="stylesheet" type="text/css" href="connect4.css">
         <script type="text/javascript"
                 src="connect4.js">
         </script>
+        
     </head>
     <body>
+
         <h1 id="startMessage" class="message">Click a column to drop a piece. <span style="color: yellow;">Yellow</span>, you're first!</h1>
         <div id="playerTurn">
+
             <p id="playerMessage" class="message">Current Player</p>
+
             <div id="player1" class="boardSquare currentPlayer">
                 <div class="boardSlot" style="background-color: yellow;"></div>  
             </div>
             <div id="player2" class="boardSquare">
                 <div class="boardSlot" style="background-color: red;"></div>
             </div>
+
         </div>
         <button id="resetButton" onclick="location.reload()">Play Again</button>
         <div id="theBoard"></div>
         
     </body>
+
 </html>

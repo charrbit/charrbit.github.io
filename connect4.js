@@ -25,14 +25,14 @@ function makeBoard() {
 function playGame() {
     let theBoardSquares = document.getElementsByClassName("boardSquare");
     for (let i = 0; i < theBoardSquares.length; i++) {
-        theBoardSquares[i].addEventListener("click", () => {
-            makeMove(theBoardSquares[i])});
+        theBoardSquares[i].addEventListener("click", makeMove, false);
     }
+    document.getElementById("theBoard").addEventListener("click", disableStartMessage, false)
 }
 
-function makeMove(aBoardSquare) {
+function makeMove() {
     let isGameOver = false;
-    let currentColumn = aBoardSquare.id.charAt(1);
+    let currentColumn = this.id.charAt(1);
     let currentPlayerColor = document.getElementsByClassName("currentPlayer")[0].firstElementChild.style.backgroundColor;
 
     trickleDown(currentColumn, currentPlayerColor);
@@ -41,8 +41,7 @@ function makeMove(aBoardSquare) {
         if (isGameOver) {
             let theBoardSquares = document.getElementsByClassName("boardSquare");
             for (let i = 0; i < theBoardSquares.length; i++) {
-                let boardSquareCopy = theBoardSquares[i].cloneNode(true);
-                theBoardSquares[i].parentNode.replaceChild(boardSquareCopy, theBoardSquares[i]);
+                theBoardSquares[i].removeEventListener("click", makeMove, false);
             }
             document.getElementById("playerMessage").innerText = "Winner!";
             document.getElementById("resetButton").style.visibility = "visible";
@@ -53,8 +52,13 @@ function makeMove(aBoardSquare) {
     }, 300);
 }
 
+function disableStartMessage() {
+    let startMessage = document.getElementById("startMessage");
+    startMessage.style.visibility = "hidden";
+    startMessage.removeEventListener("click", disableStartMessage, false);
+}
+
 function updatePlayerColor() {
-    document.getElementById("startMessage").style.visibility = "hidden";
     let currentPlayer = document.getElementsByClassName("currentPlayer")[0];
     if (currentPlayer.firstElementChild.style.backgroundColor == "yellow") { // yellow is current player
         currentPlayer.classList.remove("currentPlayer");
