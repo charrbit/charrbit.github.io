@@ -13,7 +13,7 @@ body {
     width: 980px;
     height: 840px;
     margin: auto;
-    padding-top: 86px;
+    padding-top: 128px;
 }
 
 .boardSquare {
@@ -33,4 +33,30 @@ body {
     margin-top: 10%;
     width: 80%;
     height: 80%;
+}
+
+#playerTurn {
+    background-color: transparent;
+    width: 20%;
+    height: 12%;
+    float: right;
+}
+
+#playerTurn .boardSquare {
+    width: 49%;
+    height: 100%;
+    background-color: transparent;
+    border: 1px solid black;
+}
+
+#player1 .boardSlot {
+    background-color: yellow;
+}
+
+#player2 .boardSlot {
+    background-color: red;
+}
+
+.currentPlayer {
+    background-color: white !important;
 }

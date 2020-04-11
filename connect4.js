@@ -19,6 +19,7 @@ function makeBoard() {
             theBoard.appendChild(boardSquare);
         }
     }
+    document.getElementById("resetButton").style.visibility = "hidden";
 }
 
 function playGame() {
@@ -35,19 +36,23 @@ function playGame() {
 
 function makeMove(aBoardSquare, playerColor, currentMoveCount, isGameOver) {
     let currentColumn = aBoardSquare.id.charAt(1);
-    trickleDown(currentColumn, playerColor.color);
-    setTimeout(() => {
-        checkWin(isGameOver);
-    }, 500);
-    incrementMoveCount(currentMoveCount);
-    updatePlayerColor(playerColor);
-    if (isGameOver.gameOver == true) {
+    if (!isGameOver.gameOver) {
+        console.log("game is not over");
+        trickleDown(currentColumn, playerColor.color);
+        incrementMoveCount(currentMoveCount, isGameOver);
+        updatePlayerColor(playerColor);
+        setTimeout(() => {
+            updateGameOver(isGameOver, checkWin());
+        }, 1000);
+    }
+    else {
         theBoardSquares = document.getElementsByClassName("boardSquare");
         for (let i = 0; i < theBoardSquares.length; i++) {
             let boardSquareCopy = theBoardSquares[i].cloneNode(true);
             theBoardSquares[i].parentNode.replaceChild(boardSquareCopy, theBoardSquares[i]);
         }
     }
+    console.log(checkWin());
 }
 
 function trickleDown(column, color) {
@@ -78,7 +83,17 @@ function trickleDown(column, color) {
 }
 
 function incrementMoveCount(currentMoveCount) {
-    currentMoveCount.count++;
+    setTimeout(() => {
+        if (currentMoveCount.count % 2) { // yellow is current player
+            document.getElementById("player2").classList.remove("currentPlayer");
+            document.getElementById("player1").classList.add("currentPlayer");
+        }
+        else { // red is current player
+            document.getElementById("player1").classList.remove("currentPlayer");
+            document.getElementById("player2").classList.add("currentPlayer");
+        }
+        currentMoveCount.count++;
+    }, 600);
 }
 
 function updatePlayerColor(currentColor) {
@@ -90,26 +105,38 @@ function updatePlayerColor(currentColor) {
     }
 }
 
-function updateGameOver(winDetected) {
-    winDetected.gameOver = true;
+function updateGameOver(winDetected, isGameOver) {
+    winDetected.gameOver = isGameOver;
+    if (isGameOver) {
+        document.getElementById("resetButton").style.visibility = "visible";
+        let theWinner = document.getElementById("playerTurn").getElementsByClassName("currentPlayer").item(0);
+        theWinner.classList.remove("currentPlayer");
+        if (theWinner.id == "player1") {
+            document.getElementById("player1").classList.add("winner");
+        }
+        else {
+            document.getElementById("player2").classList.add("winner");
+        }
+    }
 }
 
-function checkWin(isGameOver) {
+function checkWin() {
     let theBinaryBoard = generateBinaryBoard();
     let theBinaryBoardT = transpose(theBinaryBoard);
     let theDiagsAsRows = generateDiagsAsRows(theBinaryBoard);
 
     for (let i = 0; i < theDiagsAsRows.length; i++) {
         if (i < theBinaryBoard.length && compareFour(theBinaryBoard, i, 0)) {
-            updateGameOver(isGameOver);
+            return true;
         }
         if (i < theBinaryBoardT.length && compareFour(theBinaryBoardT, i, 0)) {
-            updateGameOver(isGameOver);
+            return true;
         }
         if (compareFour(theDiagsAsRows, i, 0)) {
-            updateGameOver(isGameOver);
+            return true;
         }
     }
+    return false;
  }
 
 function generateBinaryBoard() {
