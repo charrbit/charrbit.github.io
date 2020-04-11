@@ -13,7 +13,7 @@ body {
     width: 60%;
     height: 83%;
     margin: auto;
-    padding-top: 6%;
+    padding-top: 2%;
 }
 
 .boardSquare {
@@ -36,7 +36,14 @@ body {
     height: 80%;
 }
 
-#playerMessage {
+#startMessage {
+    display: inline-block;
+    margin-top: 2%;
+    padding-left: 35%;
+    font-size: 150%;
+}
+
+.message {
     margin: 0px;
     padding: 0px;
     font-size: 120%;

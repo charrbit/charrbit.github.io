@@ -54,6 +54,7 @@ function makeMove(aBoardSquare) {
 }
 
 function updatePlayerColor() {
+    document.getElementById("startMessage").style.visibility = "hidden";
     let currentPlayer = document.getElementsByClassName("currentPlayer")[0];
     if (currentPlayer.firstElementChild.style.backgroundColor == "yellow") { // yellow is current player
         currentPlayer.classList.remove("currentPlayer");
