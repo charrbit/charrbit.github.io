@@ -19,7 +19,7 @@ function makeBoard() {
             theBoard.appendChild(boardSquare);
         }
     }
-    document.getElementById("resetButton").style.visibility = "hidden";
+    document.getElementById("resetButton").style.visibility = "visible";
 }
 
 function playGame() {
@@ -78,7 +78,7 @@ function trickleDown(column, color) {
             nextSlotFilled = theNextSquare.firstChild.id;
             if (nextSlotFilled == "false") { // if not at final position,
                 setTimeout(() =>  { // "trickle down"
-                    theCurrentSquare.firstChild.style.backgroundColor = "white";
+                    theCurrentSquare.firstChild.style.backgroundColor = " rgba(248,248,255,0.8)";
                 }, 50 * currentRow);
             }
             else { // at its final position
