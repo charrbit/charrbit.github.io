@@ -19,7 +19,7 @@ function makeBoard() {
             theBoard.appendChild(boardSquare);
         }
     }
-    document.getElementById("resetButton").style.visibility = "visible";
+    document.getElementById("resetButton").style.visibility = "hidden";
 }
 
 function playGame() {
@@ -44,6 +44,7 @@ function makeMove(aBoardSquare) {
                 let boardSquareCopy = theBoardSquares[i].cloneNode(true);
                 theBoardSquares[i].parentNode.replaceChild(boardSquareCopy, theBoardSquares[i]);
             }
+            document.getElementById("playerMessage").innerText = "Winner!";
             document.getElementById("resetButton").style.visibility = "visible";
         }
         else {

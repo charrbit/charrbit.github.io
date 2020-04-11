@@ -36,6 +36,14 @@ body {
     height: 80%;
 }
 
+#playerMessage {
+    margin: 0px;
+    padding: 0px;
+    font-size: 120%;
+    color: white;
+    text-align: center;
+}
+
 #playerTurn {
     background-color: transparent;
     width: 12%;
@@ -44,21 +52,13 @@ body {
 }
 
 #playerTurn .boardSquare {
-    width: 49%;
+    width: 50%;
     height: 100%;
     background-color: transparent;
 }
 
 .currentPlayer {
-    background-color: white !important;
-}
-
-#playerMessage {
-    margin: 0px;
-    padding: 0px;
-    font-size: 110%;
-    color: white;
-    text-align: center;
+    background-color: whitesmoke !important;
 }
 
 #resetButton {
@@ -67,9 +67,11 @@ body {
     display: block;
     float: right;
     clear: right;
-    margin-top: 1.1%;
-    margin-right: 3%;
+    margin-top: 1.2%;
+    margin-right: 2.6%;
     color: black;
+    background: linear-gradient(yellow, red);
+    opacity: 0.7;
     border: none;
     border-radius: 12%;
 }
