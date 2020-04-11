@@ -3,21 +3,22 @@
 <html>
     <head>
         <title>Connect 4</title>
+        <link rel="stylesheet" type="text/css" href="connect4.css">
         <script type="text/javascript"
                 src="connect4.js">
         </script>
-        <link rel="stylesheet" type="text/css" href="connect4.css">
     </head>
     <body>
         <div id="playerTurn">
             <div id="player1" class="boardSquare currentPlayer">
-                <div class="boardSlot"></div>
+                <div class="boardSlot" style="background-color: yellow;"></div>  
             </div>
             <div id="player2" class="boardSquare">
-                <div class="boardSlot"></div>
+                <div class="boardSlot" style="background-color: red;"></div>
             </div>
         </div>
+        <button id="resetButton" onclick="location.reload()">Play Again</button>
         <div id="theBoard"></div>
-        <input id="resetButton" type="button" value="reset" onclick="location.reload()">
+        
     </body>
 </html>

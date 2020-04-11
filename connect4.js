@@ -23,36 +23,45 @@ function makeBoard() {
 }
 
 function playGame() {
-    let moveCount = {count: 0}; // declared as objects to modify outside playGame()
-    let currentColor = {color: "yellow"};
-    let winDetected = {gameOver: false};
-
     let theBoardSquares = document.getElementsByClassName("boardSquare");
     for (let i = 0; i < theBoardSquares.length; i++) {
         theBoardSquares[i].addEventListener("click", () => {
-            makeMove(theBoardSquares[i], currentColor, moveCount, winDetected)});
+            makeMove(theBoardSquares[i])});
     }
 }
 
-function makeMove(aBoardSquare, playerColor, currentMoveCount, isGameOver) {
+function makeMove(aBoardSquare) {
+    let isGameOver = false;
     let currentColumn = aBoardSquare.id.charAt(1);
-    if (!isGameOver.gameOver) {
-        console.log("game is not over");
-        trickleDown(currentColumn, playerColor.color);
-        incrementMoveCount(currentMoveCount, isGameOver);
-        updatePlayerColor(playerColor);
-        setTimeout(() => {
-            updateGameOver(isGameOver, checkWin());
-        }, 1000);
-    }
-    else {
-        theBoardSquares = document.getElementsByClassName("boardSquare");
-        for (let i = 0; i < theBoardSquares.length; i++) {
-            let boardSquareCopy = theBoardSquares[i].cloneNode(true);
-            theBoardSquares[i].parentNode.replaceChild(boardSquareCopy, theBoardSquares[i]);
+    let currentPlayerColor = document.getElementsByClassName("currentPlayer")[0].firstElementChild.style.backgroundColor;
+
+    trickleDown(currentColumn, currentPlayerColor);
+    setTimeout(() => {
+        isGameOver = checkWin();
+        if (isGameOver) {
+            let theBoardSquares = document.getElementsByClassName("boardSquare");
+            for (let i = 0; i < theBoardSquares.length; i++) {
+                let boardSquareCopy = theBoardSquares[i].cloneNode(true);
+                theBoardSquares[i].parentNode.replaceChild(boardSquareCopy, theBoardSquares[i]);
+            }
+            document.getElementById("resetButton").style.visibility = "visible";
         }
+        else {
+           updatePlayerColor();
+       }
+    }, 300);
+}
+
+function updatePlayerColor() {
+    let currentPlayer = document.getElementsByClassName("currentPlayer")[0];
+    if (currentPlayer.firstElementChild.style.backgroundColor == "yellow") { // yellow is current player
+        currentPlayer.classList.remove("currentPlayer");
+        document.getElementById("player2").classList.add("currentPlayer");
     }
-    console.log(checkWin());
+    else { // red is current player
+        currentPlayer.classList.remove("currentPlayer");
+        document.getElementById("player1").classList.add("currentPlayer");
+    }
 }
 
 function trickleDown(column, color) {
@@ -62,15 +71,15 @@ function trickleDown(column, color) {
         let theCurrentSquare = document.getElementById("" + currentRow + column);
         setTimeout(() => { // "trickle down"
             theCurrentSquare.firstChild.style.backgroundColor = color;
-        }, 100 * currentRow);
-        currentRow++;
+        }, 50 * currentRow);
+        currentRow++; // check next boardSlot
         if (currentRow < 6) {
             let theNextSquare = document.getElementById("" + currentRow + column);
             nextSlotFilled = theNextSquare.firstChild.id;
             if (nextSlotFilled == "false") { // if not at final position,
                 setTimeout(() =>  { // "trickle down"
                     theCurrentSquare.firstChild.style.backgroundColor = "white";
-                }, 100 * currentRow);
+                }, 50 * currentRow);
             }
             else { // at its final position
                 theCurrentSquare.firstChild.id = "true";
@@ -78,44 +87,6 @@ function trickleDown(column, color) {
         }
         else {
             theCurrentSquare.firstChild.id = "true";
-        }
-    }
-}
-
-function incrementMoveCount(currentMoveCount) {
-    setTimeout(() => {
-        if (currentMoveCount.count % 2) { // yellow is current player
-            document.getElementById("player2").classList.remove("currentPlayer");
-            document.getElementById("player1").classList.add("currentPlayer");
-        }
-        else { // red is current player
-            document.getElementById("player1").classList.remove("currentPlayer");
-            document.getElementById("player2").classList.add("currentPlayer");
-        }
-        currentMoveCount.count++;
-    }, 600);
-}
-
-function updatePlayerColor(currentColor) {
-    if (currentColor.color == "yellow") {
-        currentColor.color = "red";
-    }
-    else {
-        currentColor.color = "yellow";
-    }
-}
-
-function updateGameOver(winDetected, isGameOver) {
-    winDetected.gameOver = isGameOver;
-    if (isGameOver) {
-        document.getElementById("resetButton").style.visibility = "visible";
-        let theWinner = document.getElementById("playerTurn").getElementsByClassName("currentPlayer").item(0);
-        theWinner.classList.remove("currentPlayer");
-        if (theWinner.id == "player1") {
-            document.getElementById("player1").classList.add("winner");
-        }
-        else {
-            document.getElementById("player2").classList.add("winner");
         }
     }
 }
@@ -154,7 +125,6 @@ function generateBinaryBoard() {
             else {
                 binaryBoard[row][column] = null;
             }
-            
         }
     }
 
