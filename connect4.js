@@ -24,6 +24,7 @@ function makeBoard() {
 
 function playGame() {
     let theBoardSquares = document.getElementsByClassName("boardSquare");
+    // register each click on the board as a move being made
     for (let i = 0; i < theBoardSquares.length; i++) {
         theBoardSquares[i].addEventListener("click", makeMove, false);
     }
@@ -40,6 +41,7 @@ function makeMove() {
         isGameOver = checkWin();
         if (isGameOver) {
             let theBoardSquares = document.getElementsByClassName("boardSquare");
+            // stop the players from making any new moves
             for (let i = 0; i < theBoardSquares.length; i++) {
                 theBoardSquares[i].removeEventListener("click", makeMove, false);
             }
@@ -175,7 +177,7 @@ function getSingleDiagAsRow(theBinaryBoard, startRow, startColumn, isMainDiag) {
 
     let newRow = [];
     while (currentRow < theBinaryBoard.length && currentColumn < theBinaryBoard[0].length
-            && currentColumn >= 0) { // for antidiagonal
+            && currentColumn >= 0) { // <-- for antidiagonal
         newRow.push(theBinaryBoard[currentRow][currentColumn]);
         currentRow++;
         if (isMainDiag) {
